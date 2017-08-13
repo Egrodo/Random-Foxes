@@ -1,0 +1,22 @@
+/* to add */
+img {
+  max-width: 100%;
+  max-height: 90vh;
+  height: auto;
+  width: auto;
+  cursor: pointer;
+}
+
+p {
+  color: #e6e6d7;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  font-size: larger;
+}
+
+div.imgContainer {
+  width: 100%;
+}
+
+/* On mobile, max-width to 100% (minux edge margins) and float the title to the very bottom. */
