@@ -4,9 +4,15 @@ div.App {
   padding: 0
 }
 
-p {
+a, p {
+  text-decoration: none;
+  display: block;
   color: #e6e6d7;
   font-size: larger;
+}
+
+a:hover {
+  color: #2196F3;
 }
 
 p.instructions {

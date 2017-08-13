@@ -1,17 +1,19 @@
 import React, { Component } from 'react';
 import './Images.css';
-import oauth from './oauth_info.json'; // This is not secure, users still have access to them. React won't let me put outside of scope.
+import oauth from './oauth_info.json'; // This is not secure, users still have access to them. Would prefer something like node's env vars for prod.
 const snoowrap = require('snoowrap');
 
 const r = new snoowrap(oauth);
 
-let lastClick = 0; // Set lastClick to zero for the first time you click. This is bad practice, but how do I do it?
+let lastClick = 0; // Set lastClick to zero for the first time you click. This is bad practice, but where else can I declare it?
 
 class Images extends Component {
   constructor() {
     super();
     this.state = {
       posts: [],
+      lastId: '',
+      url: '',
       src: '',
       description: '',
       author: ''
@@ -22,13 +24,15 @@ class Images extends Component {
     this.getPosts = this.getPosts.bind(this);
   }
 
-  getPosts() {
-    // This is currently not fast as it requires loading of all n posts before displaying the first one.
-    const promise = r.getSubreddit('foxes').getTop({time: 'all', limit: 25});
-    promise.then(result => {
-      result.forEach((post, i) => {
+  getPosts(lastId) {
+    // First you'll view a random selection of the top 25 posts this month. Then, after exhausing those, you'll go to the next 25, etc.
+    const getPromise = r.getSubreddit('foxes').getTop({time: 'all', limit: 15, after: lastId});
+    getPromise.then((listing) => {
+      console.log(`LastId: ${this.state.lastId}`)
+      this.setState({lastId: listing._query.after});
+      listing.forEach((post, i) => {
         if (post.link_flair_text === 'Pics!') {
-          this.setState({posts: this.state.posts.concat(post)})
+          this.setState({posts: this.state.posts.concat(post)});
         }
       });
       this.generateImage();
@@ -38,19 +42,21 @@ class Images extends Component {
   }
 
   clickHandler() {
-    // Limit clicks to once per second in order to keep API calm.. figure out how to cache images later I guess?
-    if (Date.now() - lastClick > 500) {
+    // Limit clicks to once per second as to not overload browser.
+    if (Date.now() - lastClick > 300) {
       lastClick = Date.now();
       if (this.state.posts.length > 0) {
         console.log(`${this.state.posts.length} left.`);
         this.generateImage();
       } else {
-        document.getElementById('info').innerHTML = 'Out of foxes :(';
+        // If out of foxes, get more using the last post ID as the `after` on Reddit's API.
+        this.getPosts(this.state.lastId);
       }
     }
   }
 
   generateImage() {
+    // TODO Make sure image is actually still there..
     console.log(`Generating random image...`);
 
     const rand = Math.floor(Math.random() * this.state.posts.length); // Get random number from 1 to length of posts.
@@ -58,8 +64,13 @@ class Images extends Component {
 
     this.state.posts.splice(rand, 1);
 
-    if (!currPost.url.endsWith('.jpg')) currPost.url += '.jpg'; // Account for non-direct links. TODO account for / ignore albums.
+    console.log(currPost.url);
+    if (!currPost.url.endsWith('.jpg')) {
+      currPost.url += '.jpg'; // Account for non-direct links. TODO account for / ignore albums.
+      console.log(currPost.url);
+    }
     this.setState({
+      url: `https://reddit.com${currPost.permalink}`,
       src: currPost.url,
       description: currPost.title,
       author: currPost.author.name
@@ -75,9 +86,9 @@ class Images extends Component {
     return (
       <div className="imgContainer">
         <img onClick={this.clickHandler} title={this.state.description} alt={this.state.description} src={this.state.src} />
-        <p id="info" className="info">
+        <a alt='Go to post.' title='Go to post.' href={this.state.url} id="info" className="info">
           {`'${this.state.description}' from user ${this.state.author}`}
-        </p>
+        </a>
       </div>
     )
   }
