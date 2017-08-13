@@ -3,3 +3,13 @@ div.App {
   margin: 0;
   padding: 0
 }
+
+p {
+  color: #e6e6d7;
+  font-size: larger;
+}
+
+p.instructions {
+  margin: .5em 0 .5em 0;
+  width: 100%;
+}
