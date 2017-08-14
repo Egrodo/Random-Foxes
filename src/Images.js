@@ -3,6 +3,7 @@ import './Images.css';
 import oauth from './oauth_info.json'; // This is not secure, users still have access to them. Would prefer something like node's env vars for prod.
 const snoowrap = require('snoowrap');
 
+// TODO: User local storage to never show dups. Allow for input to change image search.
 const r = new snoowrap(oauth);
 
 let lastClick = 0; // Set lastClick to zero for the first time you click. This is bad practice, but where else can I declare it?
@@ -26,9 +27,9 @@ class Images extends Component {
 
   getPosts(lastId) {
     // First you'll view a random selection of the top 25 posts this month. Then, after exhausing those, you'll go to the next 25, etc.
-    const getPromise = r.getSubreddit('foxes').getTop({time: 'all', limit: 15, after: lastId});
+    const getPromise = r.getSubreddit('foxes').getTop({time: 'all', limit: 5, after: lastId});
     getPromise.then((listing) => {
-      console.log(`LastId: ${this.state.lastId}`)
+      console.log('Last ID: ', (sessionStorage.lastPostId ? `${sessionStorage.lastPostId}` : (this.state.lastId ? `${this.state.lastId}` : `No last ID`)));
       this.setState({lastId: listing._query.after});
       listing.forEach((post, i) => {
         if (post.link_flair_text === 'Pics!') {
@@ -46,10 +47,13 @@ class Images extends Component {
     if (Date.now() - lastClick > 300) {
       lastClick = Date.now();
       if (this.state.posts.length > 0) {
-        console.log(`${this.state.posts.length} left.`);
         this.generateImage();
       } else {
-        // If out of foxes, get more using the last post ID as the `after` on Reddit's API.
+        // If out of foxes,
+        // store our location in sessionStorage.
+        sessionStorage.setItem('lastPostId', this.state.lastId);
+        console.log('hit limit, saving', sessionStorage.lastPostId);
+        // get more using the last post ID as the `after` on Reddit's API.
         this.getPosts(this.state.lastId);
       }
     }
@@ -67,7 +71,6 @@ class Images extends Component {
     console.log(currPost.url);
     if (!currPost.url.endsWith('.jpg')) {
       currPost.url += '.jpg'; // Account for non-direct links. TODO account for / ignore albums.
-      console.log(currPost.url);
     }
     this.setState({
       url: `https://reddit.com${currPost.permalink}`,
@@ -79,7 +82,15 @@ class Images extends Component {
   }
 
   componentWillMount() { // On first load.
-    this.getPosts(); // First collect displayable posts.
+    // If the user has visited the site during same session,
+    // continue from where they left off.
+    if (typeof(Storage) !== 'undefined') {
+      if (sessionStorage.lastPostId) {
+        this.getPosts(sessionStorage.lastPostId);
+      } else {
+        this.getPosts();
+      }
+    }
   }
 
   render() {
