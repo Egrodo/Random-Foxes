@@ -27,7 +27,7 @@ class Images extends Component {
 
   getPosts(lastId) {
     // First you'll view a random selection of the top 25 posts this month. Then, after exhausing those, you'll go to the next 25, etc.
-    const getPromise = r.getSubreddit('foxes').getTop({time: 'all', limit: 5, after: lastId});
+    const getPromise = r.getSubreddit('foxes').getTop({time: 'all', limit: 25, after: lastId});
     getPromise.then((listing) => {
       console.log('Last ID: ', (sessionStorage.lastPostId ? `${sessionStorage.lastPostId}` : (this.state.lastId ? `${this.state.lastId}` : `No last ID`)));
       this.setState({lastId: listing._query.after});
