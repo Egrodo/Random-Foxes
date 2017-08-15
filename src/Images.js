@@ -5,13 +5,12 @@ const snoowrap = window.snoowrap;
 
 const r = new snoowrap(oauth);
 
-let lastClick = 0; // Set lastClick to zero for the first time you click. This is bad practice, but where else can I declare it?
-
 class Images extends Component {
   constructor() {
     super();
     this.state = {
       posts: [],
+      lastClick: 0,
       lastId: '',
       url: '',
       src: '',
@@ -26,7 +25,7 @@ class Images extends Component {
 
   getPosts(lastId) {
     // First you'll view a random selection of the top 25 posts this month. Then, after exhausing those, you'll go to the next 25, etc.
-    const getPromise = r.getSubreddit('foxes').getTop({time: 'all', limit: 5, after: lastId});
+    const getPromise = r.getSubreddit('foxes').getTop({time: 'all', limit: 25, after: lastId});
     getPromise.then((listing) => {
       console.log('Last ID: ', (localStorage.lastPostId ? `${localStorage.lastPostId}` : (this.state.lastId ? `${this.state.lastId}` : `No last ID`)));
       this.setState({lastId: listing._query.after});
@@ -43,8 +42,8 @@ class Images extends Component {
 
   clickHandler() {
     // Limit clicks to once per second as to not overload browser.
-    if (Date.now() - lastClick > 300) {
-      lastClick = Date.now();
+    if (Date.now() - this.state.lastClick > 300) {
+      this.setState({lastClick: Date.now()});
       if (this.state.posts.length > 0) {
         this.generateImage();
       } else {
@@ -81,7 +80,7 @@ class Images extends Component {
   }
 
   componentWillMount() { // On first load.
-    // If the user has visited the site during same local,
+    // If the user has visited the site before,
     // continue from where they left off.
     if (typeof(Storage) !== 'undefined') {
       if (localStorage.lastPostId) {

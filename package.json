@@ -1,7 +1,7 @@
 {
   "name": "foxes",
-  "homepage": "Random-Foxes",
-  "version": "0.1.0",
+  "homepage": "https://egrodo.github.io/Random-Foxes",
+  "version": "1.0.0",
   "private": true,
   "dependencies": {
     "react": "^15.6.1",
