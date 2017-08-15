@@ -58,18 +58,19 @@ class Images extends Component {
   }
 
   generateImage() {
-    // TODO Make sure image is actually still there..
     console.log(`Generating random image...`);
 
     const rand = Math.floor(Math.random() * this.state.posts.length); // Get random number from 1 to length of posts.
     const currPost = this.state.posts[rand];
+    this.state.posts.splice(rand, 1); // Generate a random post, then remove it from the posts array so we don't display it again.
 
-    this.state.posts.splice(rand, 1);
-
-    console.log(currPost.url);
-    if (!currPost.url.endsWith('.jpg')) {
+    if (!currPost.url.endsWith('.jpg')) { // Fix non-direct links.
       currPost.url += '.jpg'; // Account for non-direct links. TODO account for / ignore albums.
     }
+    if (currPost.url.indexOf('https') === -1) { // Fix non-secure links.
+      currPost.url = currPost.url.replace('http', 'https');
+    }
+    
     this.setState({
       url: `https://reddit.com${currPost.permalink}`,
       src: currPost.url,
