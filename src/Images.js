@@ -70,7 +70,7 @@ class Images extends Component {
     if (currPost.url.indexOf('https') === -1) { // Fix non-secure links.
       currPost.url = currPost.url.replace('http', 'https');
     }
-    
+
     this.setState({
       url: `https://reddit.com${currPost.permalink}`,
       src: currPost.url,
