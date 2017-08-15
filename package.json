@@ -1,6 +1,6 @@
 {
-  "homepage": "/build",
   "name": "foxes",
+  "homepage": "Random-Foxes",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
