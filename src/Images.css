@@ -17,3 +17,42 @@ p.info {
 div.imgContainer {
   width: 100%;
 }
+
+div.App {
+  text-align: center;
+  margin: 0;
+  padding: 0
+}
+
+a, p {
+  text-decoration: none;
+  font-size: larger;
+  display: block;
+  color: #e6e6d7;
+}
+
+a:hover {
+  color: #2196F3;
+}
+
+div.instructions {
+  margin-left: auto;
+  margin-right: auto;
+  width: 40vw;
+}
+
+@media only screen and (min-device-width : 450px) and (max-device-width : 800px) {
+  div.instructions {
+    width: 60vw;
+  }
+}
+@media only screen and (max-device-width : 450px) {
+  div.instructions {
+    width: 95vw;
+  }
+}
+
+p.instructions {
+  margin: .5em 0 .5em 0;
+  width: 100%;
+}
