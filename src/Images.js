@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import './Images.css';
 import PropTypes from 'prop-types';
 import oauth from './oauth_info.json'; // Please don't steal whilst I don't know how to use node env vars :(
-const snoowrap = window.snoowrap;
+const Snoowrap = window.snoowrap;
 
-const r = new snoowrap(oauth);
+const r = new Snoowrap(oauth);
 
 class Images extends Component {
     constructor(props) {
@@ -28,10 +28,9 @@ class Images extends Component {
     }
 
     generatePosts(lastId) {
-    // First you'll view a random selection of the top 15 posts this month. Then, after exhausing those, you'll go to the next 25, etc.
-        const getPromise = r.getSubreddit('foxes').getTop({time: 'all', limit: 25, after: lastId});    
-        getPromise.then((listing) => {
-            console.log(listing);
+    // First you'll view a random selection of the top 15 posts of all time. Then, after exhausing those, you'll go to the next 25, etc.
+        const myPromise = r.getSubreddit(this.state.sub).getTop({time: 'all', limit: 15, after: lastId}); // After not working?
+        myPromise.then((listing) => {
             this.setState({lastId: listing._query.after});
 
             // TODO: If flair is null, no need to filter, attempt to display all. Maybe display flair somewhere though.
@@ -95,6 +94,7 @@ class Images extends Component {
     componentWillMount() { // On first load.
         // If the user has visited the site before,
         // continue from where they left off.
+        // TODO: Sometimes the after id it stores breaks, can't rely on it forever.
         if (typeof(Storage) !== 'undefined') {
             if (localStorage.lastPostId) {
                 this.generatePosts(localStorage.lastPostId);
