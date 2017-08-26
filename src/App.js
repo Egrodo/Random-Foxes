@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Images from './Images';
-import './App.css';
+import Inputs from './Inputs';
 class App extends Component {
 
     render() {
@@ -9,25 +9,15 @@ class App extends Component {
         const flair = domain.searchParams.get('flair') || null;
         if (sub !== null && flair !== null) {
             return (
-                <Images sub={sub} flair={flair} />
+                <Images sub={sub} flairFilter={true} flair={flair} />
+            );
+        } else if (sub !== null) {
+            return (
+                <Images sub={sub} />
             );
         } else {
             return (
-                <div className="App">
-                    <h1 className="instructions">
-                      Reddit Image Generator
-                    </h1>
-                    <div className="instructions">
-                        <p>
-                          Type in the subreddit and flair of the images you want to generate below. Or choose a pre-selected combination!
-                        </p>
-                    </div>
-                    <form>
-                        <input>
-            
-                        </input>
-                    </form>
-                </div>
+                <Inputs />
             );
         }
     }
