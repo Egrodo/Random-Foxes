@@ -94,7 +94,7 @@ class Images extends Component {
     componentWillMount() { // On first load.
         // If the user has visited the site before,
         // continue from where they left off.
-        // TODO: Sometimes the after id it stores breaks, can't rely on it forever.
+        // BUG: Sometimes the after id it stores breaks, can't rely on it forever.
         if (typeof(Storage) !== 'undefined') {
             if (localStorage.lastPostId) {
                 this.generatePosts(localStorage.lastPostId);

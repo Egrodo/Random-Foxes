@@ -24,6 +24,7 @@ class Inputs extends Component {
         window.location.href = `?sub=${this.state.sub}&flair=${this.state.flair}`;
     }
 
+    // TODO: Stylize this and add a dropdown for commonly used generators.
     render() {
         return (
             <div className="App">
