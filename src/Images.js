@@ -28,8 +28,8 @@ class Images extends Component {
     }
 
     generatePosts(lastId) {
-    // First you'll view a random selection of the top 15 posts of all time. Then, after exhausing those, you'll go to the next 25, etc.
-        const myPromise = r.getSubreddit(this.state.sub).getTop({time: 'all', limit: 15, after: lastId}); // After not working?
+    // First you'll view a random selection of the top 10 posts of all time. Then, after exhausing those, you'll go to the next 25, etc.
+        const myPromise = r.getSubreddit(this.state.sub).getTop({time: 'all', limit: 10, after: lastId}); // After not working?
         myPromise.then((listing) => {
             this.setState({lastId: listing._query.after});
 
@@ -108,12 +108,12 @@ class Images extends Component {
         return (
             <div className="App">
                 <p className="instructions">
-                  Click on the image to get the next one!
+                  Click on the image to go to the next one!
                 </p>
                 <div className="imgContainer">
-                    <img onClick={this.clickHandler} title={this.state.description} alt={this.state.description} src={this.state.imgUrl} />
+                    <img onClick={this.clickHandler} onError={this.clickHandler} title={this.state.description} alt={this.state.description} src={this.state.imgUrl} />
                     <a alt='Go to post.' title='Go to post.' href={this.state.postUrl} id="info" className="info"> 
-                        {`'${this.state.description}' from user ${this.state.author}`}
+                        {`"${this.state.description}" from user ${this.state.author}`}
                     </a>
                     <p className='info'>
                         {`Flair: ${this.state.flair}`}
