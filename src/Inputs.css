@@ -1,3 +1,39 @@
 body {
-    color: #e6e6d7;
+    color: #A5E3D0;
+}
+
+label {
+    display: block;
+    margin-bottom: 1em;
+}
+
+label h1 {
+    font-size: 1.5em;
+}
+
+input[type=text] {
+    padding: 8px 15px 8px 15px;
+    border: none;
+    border-bottom: solid 2px #6E7DAB;
+    background-color: #575366;
+    border-radius: 50px;
+    color: #D1E3DD;
+    font-size: 1em;    
+}
+
+input[type=text]:focus {
+    border-bottom: solid 2px #E0A050;
+    /* outline: none; */
+}
+
+input[type=submit] {
+    font-size: 1.3em;
+    margin-top: 1em;
+    padding: .5em 3em;
+    background-color: #61A7A1;
+    color: #D1E3DD;
+    cursor: pointer;
+    border-style: none;
+    text-shadow: 2px 2px 6px black;
+    border-radius: 50px;
 }

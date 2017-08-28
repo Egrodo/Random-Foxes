@@ -21,6 +21,7 @@ class Images extends Component {
             flairFilter: props.flairFilter || false,
             flair: props.flair || null
         };
+
         this.generateImage = this.generateImage.bind(this);
         this.clickHandler = this.clickHandler.bind(this);
         this.generatePosts = this.generatePosts.bind(this);
@@ -108,7 +109,7 @@ class Images extends Component {
         return (
             <div className="App">
                 <p className="instructions">
-                  Click on the image to go to the next one!
+                  Tap on the image to go to the next one!
                 </p>
                 <div className="imgContainer">
                     <img onClick={this.clickHandler} onError={this.clickHandler} title={this.state.description} alt={this.state.description} src={this.state.imgUrl} />
