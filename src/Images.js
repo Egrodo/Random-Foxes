@@ -34,7 +34,6 @@ class Images extends Component {
         myPromise.then((listing) => {
             this.setState({lastId: listing._query.after});
 
-            // TODO: If flair is null, no need to filter, attempt to display all. Maybe display flair somewhere though.
             if (this.state.flairFilter === true) {
                 listing.forEach((post) => {
                     if (post.link_flair_text === this.state.flair) {
@@ -47,7 +46,7 @@ class Images extends Component {
                 });
             }
             this.generateImage();
-        }, error => {
+        }).catch((error) => {
             console.log(`ERROR >>> ${error}`);
         });
     }
@@ -70,11 +69,11 @@ class Images extends Component {
     }
 
     generateImage() {
+        // TODO: How do I cleanly handle what happens when user enters invalid flair?
         const rand = Math.floor(Math.random() * this.state.posts.length); // Get random number from 1 to length of posts.
         const currPost = this.state.posts[rand];
         this.state.posts.splice(rand, 1); // Generate a random post, then remove it from the posts array so we don't display it again.
 
-        // TODO: account for / ignore albums.
         if (!currPost.url.endsWith('.jpg')) { // Fix non-direct links.
             currPost.url += '.jpg'; // Account for non-direct links.
         }
@@ -92,7 +91,7 @@ class Images extends Component {
         });
     }
 
-    componentWillMount() { // On first load.
+    componentWillMount() { // Before components load,
         // If the user has visited the site before,
         // continue from where they left off.
         // BUG: Sometimes the after id it stores breaks, can't rely on it forever.

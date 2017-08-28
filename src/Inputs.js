@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './Inputs.css';
+import oauth from './oauth_info.json'; // Please don't steal whilst I don't know how to use node env vars :(
 
 class Inputs extends Component {
     constructor(props) {
@@ -19,20 +20,45 @@ class Inputs extends Component {
         });
     }
 
-    handleSubmit(event) {
-        event.preventDefault(); 
+    sendTo(sub, flair) {
+        const Snoowrap = window.snoowrap;
+        const r = new Snoowrap(oauth);
 
-        if (this.state.sub.trim().length > 3 && this.state.sub.trim().length < 20) {
-            if (this.state.sub.trim() !== '' && this.state.flair.trim() !== '') {
-                window.location.href = `?sub=${this.state.sub}&flair=${this.state.flair}`;
-            } else if (this.state.sub.trim() !== '') {
-                window.location.href = `?sub=${this.state.sub}`;
+        r.getSubreddit(sub).created_utc.then(() => {
+            if (flair) {
+                window.location.href = `?sub=${sub}&flair=${flair}`;
+            } else {
+                window.location.href = `?sub=${sub}`;
+            }
+            
+        }).catch(() => {
+            console.log('invalid sub'); 
+            // If user-provied sub doesn't exist,
+            this.setState({sub: ''}); // clear the input box of whitespace,
+            document.getElementById('sub').focus(); // re-focus the required input,
+            document.getElementById('errorDisplay').innerHTML = 'That subreddit doesn\'t exist.'; // and display error messasge.
+        });
+    }
+
+    handleSubmit(event) {
+        const sub = this.state.sub.trim();
+        const flair = this.state.flair.trim();
+        event.preventDefault(); 
+        if (sub.length > 2 && sub.length < 21) {
+            if (sub !== '' && flair !== '') {
+                // If user provided both sub and flair.
+                this.sendTo(sub, flair);
+            } else if (sub !== '') {
+                // If user only provided sub.
+                this.sendTo(sub);
             }
         } else {
-            // If they didn't enter any non-whitespace,
+            // If user only entered whitespace
             this.setState({sub: ''}); // clear the input box of whitespace,
             document.getElementById('sub').focus(); // and re-focus the required input.
+            document.getElementById('errorDisplay').innerHTML = 'Invalid input.';
         }
+
     }
 
     componentDidMount() {
@@ -40,7 +66,7 @@ class Inputs extends Component {
         this.input.focus(); 
     }
 
-    // TODO: Stylize this and add a dropdown for commonly used generators.
+    // TODO: Add dropdown for commonly used expressions.
     render() {
         return (
             <div className="App">
@@ -53,6 +79,18 @@ class Inputs extends Component {
                         Optionally, you can filter them by post flair as well.
                     </p>
                 </div>
+
+
+                <ul>
+                    <p>Or try a preset.</p>
+                    <li><a href="?sub=foxes&flair=Pics!">Fox Pictures</a></li>
+                    <li><a href=""></a></li>
+                    <li><a href=""></a></li>
+                    <li><a href=""></a></li>
+                    <li><a href=""></a></li>
+                    <li><a href=""></a></li>
+                    <li><a href=""></a></li>
+                </ul>
                 <form onSubmit={this.handleSubmit}>
                     <label>
                         <h1>
@@ -88,6 +126,9 @@ class Inputs extends Component {
                         value='Submit'
                     />
                 </form>
+                <p id='errorDisplay'>
+
+                </p>
             </div>
         );
     }
