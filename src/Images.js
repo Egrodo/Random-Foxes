@@ -74,6 +74,7 @@ class Images extends Component {
         const currPost = this.state.posts[rand];
         this.state.posts.splice(rand, 1); // Generate a random post, then remove it from the posts array so we don't display it again.
 
+        // TODO: If NOT jpg or png etc.
         if (!currPost.url.endsWith('.jpg')) { // Fix non-direct links.
             currPost.url += '.jpg'; // Account for non-direct links.
         }

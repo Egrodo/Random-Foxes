@@ -1,0 +1,60 @@
+
+label {
+    margin: 0;
+}
+
+nav > ul {
+    width: 100%;
+    text-align: left;
+}
+
+nav div:hover {
+    cursor: pointer;
+}
+
+nav div:hover > a {
+    color: #777;
+}
+
+nav ul > a {
+    cursor: pointer;
+    display: block;
+    outline: none;
+    width: 100%;
+    text-decoration: none;
+}
+
+nav ul {
+    display: none;
+    list-style: none;
+}
+
+ul > a {
+    text-decoration: none;
+}
+
+nav {
+    display: block;
+    width: 100%;
+}
+
+nav ul {
+    display: none;
+    list-style: none;
+    width: 20%;
+    margin: auto;
+    padding: 0;
+}
+/* .nav {
+    display: block;
+    width: 100%;
+}
+ul {
+    display: block;
+    list-style: none;
+    width: 20%;
+    margin: auto;
+    padding: 0;
+    background-color: black;
+    text-align: center;
+} */

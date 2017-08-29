@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './Inputs.css';
 import oauth from './oauth_info.json'; // Please don't steal whilst I don't know how to use node env vars :(
+import Presets from './Presets';
 
 class Inputs extends Component {
     constructor(props) {
@@ -80,17 +81,8 @@ class Inputs extends Component {
                     </p>
                 </div>
 
+                <Presets />
 
-                <ul>
-                    <p>Or try a preset.</p>
-                    <li><a href="?sub=foxes&flair=Pics!">Fox Pictures</a></li>
-                    <li><a href=""></a></li>
-                    <li><a href=""></a></li>
-                    <li><a href=""></a></li>
-                    <li><a href=""></a></li>
-                    <li><a href=""></a></li>
-                    <li><a href=""></a></li>
-                </ul>
                 <form onSubmit={this.handleSubmit}>
                     <label>
                         <h1>
