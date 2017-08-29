@@ -5,13 +5,14 @@ ul {
 
 li > h1 {
     font-size: 1.5em;
-    margin-top: 1.5em;
+    margin-top: 1.2em;
     margin-bottom: 0;
     cursor: pointer; 
 }
 
 .sub-menu-parent {
     position: relative;
+    display: inline-block;
 }
 
 .sub-menu {
