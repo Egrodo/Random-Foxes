@@ -81,8 +81,6 @@ class Inputs extends Component {
                     </p>
                 </div>
 
-                <Presets />
-
                 <form onSubmit={this.handleSubmit}>
                     <label>
                         <h1>
@@ -121,6 +119,8 @@ class Inputs extends Component {
                 <p id='errorDisplay'>
 
                 </p>
+                
+                <Presets />
             </div>
         );
     }

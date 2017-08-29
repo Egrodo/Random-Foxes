@@ -1,23 +1,23 @@
 import React, { Component } from 'react';
-import 'Presets.css';
+import './Presets.css';
 
 class Presets extends Component {
 
 
     render() {
         return (
-            <nav>
-                <label onClick={this.showPresets}>Try a preset</label>
-                <ul id='toggle'>
-                    <li><a href="?sub=foxes&flair=Pics!">Fox Pictures</a></li>
-                    <li><a href="?sub=cats&flair=Cat Picture">Cat Pictures</a></li>
-                    <li><a href="">Dog Pictures</a></li>
-                    <li><a href="">Earth</a></li>
-                    <li><a href="">City</a></li>
-                    <li><a href="">Art</a></li>
-                    <li><a href="">unsafe</a></li>
-                </ul>
-            </nav>
+            <ul>
+                <li className='sub-menu-parent'>
+                    <h1>Or try a preset.</h1>
+                    <ul className='sub-menu'>
+                        <li><a href='?sub=foxes&flair=Pics!'>Fox Pictures</a></li>
+                        <li><a href='?sub=cats&flair=Cat Picture'>Cat Pictures</a></li>
+                        <li><a href='?sub=puppies'>Dog Pictures</a></li>
+                        <li><a href='?sub=EarthPorn'>Earth Porn</a></li>
+                        <li><a href='?sub=CityPorn'>City Porn</a></li>
+                    </ul>
+                </li>
+            </ul>
         );
     }
 }

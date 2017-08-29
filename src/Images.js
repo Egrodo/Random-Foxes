@@ -96,6 +96,7 @@ class Images extends Component {
         // If the user has visited the site before,
         // continue from where they left off.
         // BUG: Sometimes the after id it stores breaks, can't rely on it forever.
+        // BUG: Ah shit, I need to change this to depend on what's being displayed
         if (typeof(Storage) !== 'undefined') {
             if (localStorage.lastPostId) {
                 this.generatePosts(localStorage.lastPostId);
@@ -118,6 +119,9 @@ class Images extends Component {
                     </a>
                     <p className='info'>
                         {`Flair: ${this.state.flair}`}
+                    </p>
+                    <p className='info'>
+                        <a href="?">Go back</a>
                     </p>
                 </div>
             </div>
