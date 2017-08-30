@@ -73,6 +73,7 @@ class Images extends Component {
         const newState = Object.assign({}, this.state, {posts});
         this.setState(() => newState);
 
+        if (currPost.url.endsWith('.gifv')) currPost.url = currPost.url.slice(0, -1); // Boom, gifv support.
         if (!currPost.url.endsWith('.jpg') && !currPost.url.endsWith('.png') && !currPost.url.endsWith('.gif')) { // Fix non-direct links.
             currPost.url += '.jpg'; // Account for non-direct links.
         }
