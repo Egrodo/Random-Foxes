@@ -4,7 +4,7 @@ img {
   max-height: 90vh;
   min-height: 300px;
   min-width: 250px;
-  background: url('http://i.imgur.com/FiS4Dq3.png'); /* Placeholder background for if an image fails to load */
+  background: url('https://i.imgur.com/FiS4Dq3.png'); /* Placeholder background for if an image fails to load */
   height: auto;
   width: auto;
   cursor: pointer;
