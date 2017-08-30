@@ -11,7 +11,16 @@ img {
 }
 
 p.info {
-  margin-top: 5px;
+  margin: 5px 0;
+}
+
+p.info > a {
+  color: #A5E3D0;
+  display: inline-block;
+}
+
+p.info > a:hover {
+  color: #61A7A1;
 }
 
 div.imgContainer {

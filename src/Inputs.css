@@ -15,6 +15,7 @@ input[type=text] {
     padding: 8px 15px 8px 15px;
     border: none;
     border-bottom: solid 2px #6E7DAB;
+    transition: border-bottom .3s;
     background-color: #575366;
     border-radius: 50px;
     color: #D1E3DD;

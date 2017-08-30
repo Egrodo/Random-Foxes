@@ -21,26 +21,6 @@ class Inputs extends Component {
         });
     }
 
-    sendTo(sub, flair) {
-        const Snoowrap = window.snoowrap;
-        const r = new Snoowrap(oauth);
-
-        r.getSubreddit(sub).created_utc.then(() => {
-            if (flair) {
-                window.location.href = `?sub=${sub}&flair=${flair}`;
-            } else {
-                window.location.href = `?sub=${sub}`;
-            }
-            
-        }).catch(() => {
-            console.log('invalid sub'); 
-            // If user-provied sub doesn't exist,
-            this.setState({sub: ''}); // clear the input box of whitespace,
-            document.getElementById('sub').focus(); // re-focus the required input,
-            document.getElementById('errorDisplay').innerHTML = 'That subreddit doesn\'t exist.'; // and display error messasge.
-        });
-    }
-
     handleSubmit(event) {
         const sub = this.state.sub.trim();
         const flair = this.state.flair.trim();
@@ -60,6 +40,26 @@ class Inputs extends Component {
             document.getElementById('errorDisplay').innerHTML = 'Invalid input.';
         }
 
+    }
+    
+    sendTo(sub, flair) {
+        const Snoowrap = window.snoowrap;
+        const r = new Snoowrap(oauth);
+
+        r.getSubreddit(sub).created_utc.then(() => {
+            if (flair) {
+                window.location.href = `?sub=${sub}&flair=${flair}`;
+            } else {
+                window.location.href = `?sub=${sub}`;
+            }
+            
+        }).catch(() => {
+            console.log('invalid sub'); 
+            // If user-provied sub doesn't exist,
+            this.setState({sub: ''}); // clear the input box of whitespace,
+            document.getElementById('sub').focus(); // re-focus the required input,
+            document.getElementById('errorDisplay').innerHTML = 'That subreddit doesn\'t exist.'; // and display error messasge.
+        });
     }
 
     componentDidMount() {

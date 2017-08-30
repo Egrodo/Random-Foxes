@@ -11,7 +11,6 @@ class Images extends Component {
         super(props);
         this.state = {
             posts: [],
-            lastClick: 0,
             lastId: '',
             imgUrl: '',
             postUrl: '',
@@ -23,20 +22,21 @@ class Images extends Component {
         };
 
         this.generateImage = this.generateImage.bind(this);
+        this.generatePosts = this.generatePosts.bind(this);        
         this.clickHandler = this.clickHandler.bind(this);
-        this.generatePosts = this.generatePosts.bind(this);
-        
     }
 
-    generatePosts(lastId) {
-    // First you'll view a random selection of the top 10 posts of all time. Then, after exhausing those, you'll go to the next 25, etc.
-        const myPromise = r.getSubreddit(this.state.sub).getTop({time: 'all', limit: 10, after: lastId}); // After not working?
+    generatePosts() {
+        // Generate promise to get 10 posts from hot.
+        console.log('generating posts. lastId: ', this.state.lastId);
+        const myPromise = r.getSubreddit(this.state.sub).getHot({limit: 25, after: this.state.lastId});
         myPromise.then((listing) => {
-            this.setState({lastId: listing._query.after});
 
+            this.setState({lastId: listing._query.after});
             if (this.state.flairFilter === true) {
                 listing.forEach((post) => {
                     if (post.link_flair_text === this.state.flair) {
+                        console.log('found flair match');
                         this.setState({posts: this.state.posts.concat(post)});
                     }
                 });
@@ -47,24 +47,19 @@ class Images extends Component {
             }
             this.generateImage();
         }).catch((error) => {
+            // BUG: If the generated posts contains no flair-matches, user will have to click twice.
             console.log(`ERROR >>> ${error}`);
         });
     }
 
     clickHandler() {
-    // Limit clicks to once per second as to not overload browser.
-        if (Date.now() - this.state.lastClick > 300) {
-            this.setState({lastClick: Date.now()});
-            if (this.state.posts.length > 0) {
-                this.generateImage();
-            } else {
-                // If out of foxes,
-                // store our location in localStorage.
-                localStorage.setItem('lastPostId', this.state.lastId);
-                console.log('hit limit, saving', localStorage.lastPostId);
-                // get more using the last post ID as the `after` on Reddit's API.
-                this.generatePosts(this.state.lastId);
-            }
+        // Limit clicks to once per second as to not overload browser.
+        if (this.state.posts.length > 0) {
+            this.generateImage();
+        } else {
+            // If out of foxes,
+            // get more using the last post ID as the `after` on Reddit's API.
+            this.generatePosts();
         }
     }
 
@@ -74,8 +69,7 @@ class Images extends Component {
         const currPost = this.state.posts[rand];
         this.state.posts.splice(rand, 1); // Generate a random post, then remove it from the posts array so we don't display it again.
 
-        // TODO: If NOT jpg or png etc.
-        if (!currPost.url.endsWith('.jpg')) { // Fix non-direct links.
+        if (!currPost.url.endsWith('.jpg') && !currPost.url.endsWith('.png') && !currPost.url.endsWith('.gif')) { // Fix non-direct links.
             currPost.url += '.jpg'; // Account for non-direct links.
         }
         if (currPost.url.indexOf('https') === -1) { // Fix non-secure links.
@@ -92,18 +86,9 @@ class Images extends Component {
         });
     }
 
-    componentWillMount() { // Before components load,
-        // If the user has visited the site before,
-        // continue from where they left off.
-        // BUG: Sometimes the after id it stores breaks, can't rely on it forever.
-        // BUG: Ah shit, I need to change this to depend on what's being displayed
-        if (typeof(Storage) !== 'undefined') {
-            if (localStorage.lastPostId) {
-                this.generatePosts(localStorage.lastPostId);
-            } else {
-                this.generatePosts();
-            }
-        }
+    componentDidMount() {
+        // When component mounts for first time, generate posts.
+        this.generatePosts();
     }
 
     render() {
@@ -113,7 +98,7 @@ class Images extends Component {
                   Tap on the image to go to the next one!
                 </p>
                 <div className="imgContainer">
-                    <img onClick={this.clickHandler} onError={this.clickHandler} title={this.state.description} alt={this.state.description} src={this.state.imgUrl} />
+                    <img onClick={this.clickHandler} title={this.state.description} alt={this.state.description} src={this.state.imgUrl} />
                     <a alt='Go to post.' title='Go to post.' href={this.state.postUrl} id="info" className="info"> 
                         {`"${this.state.description}" from user ${this.state.author}`}
                     </a>
@@ -121,7 +106,7 @@ class Images extends Component {
                         {`Flair: ${this.state.flair}`}
                     </p>
                     <p className='info'>
-                        <a href="?">Go back</a>
+                        <a href="?">Go Back</a>
                     </p>
                 </div>
             </div>
