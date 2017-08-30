@@ -28,21 +28,20 @@ class Images extends Component {
 
     generatePosts() {
         // Generate promise to get 10 posts from hot.
-        console.log('generating posts. lastId: ', this.state.lastId);
-        const myPromise = r.getSubreddit(this.state.sub).getHot({limit: 25, after: this.state.lastId});
+        const myPromise = r.getSubreddit(this.state.sub).getHot({limit: 15, after: this.state.lastId});
         myPromise.then((listing) => {
 
             this.setState({lastId: listing._query.after});
-            if (this.state.flairFilter === true) {
+            if (this.state.flairFilter) {
+                const posts = [];
                 listing.forEach((post) => {
-                    if (post.link_flair_text === this.state.flair) {
-                        console.log('found flair match');
-                        this.setState({posts: this.state.posts.concat(post)});
-                    }
+                    if (post.link_flair_text === this.state.flair) posts.push(post);
                 });
+                const newState = Object.assign({}, this.state, {posts});
+                this.setState(() => newState);
             } else {
                 const posts = [];
-                listing.forEach((post) => posts.concat(post));
+                listing.forEach((post) => posts.push(post));
                 const newState = Object.assign({}, this.state, {posts});
                 this.setState(() => newState);
             }
@@ -72,7 +71,6 @@ class Images extends Component {
         posts.splice(rand, 1);
         const newState = Object.assign({}, this.state, {posts});
         this.setState(() => newState);
-
         if (currPost.url.endsWith('.gifv')) currPost.url = currPost.url.slice(0, -1); // Boom, gifv support.
         if (!currPost.url.endsWith('.jpg') && !currPost.url.endsWith('.png') && !currPost.url.endsWith('.gif')) { // Fix non-direct links.
             currPost.url += '.jpg'; // Account for non-direct links.
