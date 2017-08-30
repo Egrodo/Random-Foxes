@@ -41,9 +41,10 @@ class Images extends Component {
                     }
                 });
             } else {
-                listing.forEach((post) => {
-                    this.setState({posts: this.state.posts.concat(post)});
-                });
+                const posts = [];
+                listing.forEach((post) => posts.concat(post));
+                const newState = Object.assign({}, this.state, {posts});
+                this.setState(() => newState);
             }
             this.generateImage();
         }).catch((error) => {
@@ -68,8 +69,9 @@ class Images extends Component {
         const rand = Math.floor(Math.random() * this.state.posts.length); // Get random number from 1 to length of posts.
         const currPost = this.state.posts[rand];
         const posts = this.state.posts;
-        posts.splice(rand, 1); // Generate a random post, then remove it from the posts array so we don't display it again.
-        this.setState({posts: posts});
+        posts.splice(rand, 1);
+        const newState = Object.assign({}, this.state, {posts});
+        this.setState(() => newState);
 
         if (!currPost.url.endsWith('.jpg') && !currPost.url.endsWith('.png') && !currPost.url.endsWith('.gif')) { // Fix non-direct links.
             currPost.url += '.jpg'; // Account for non-direct links.
