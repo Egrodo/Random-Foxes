@@ -67,7 +67,9 @@ class Images extends Component {
         // TODO: How do I cleanly handle what happens when user enters invalid flair?
         const rand = Math.floor(Math.random() * this.state.posts.length); // Get random number from 1 to length of posts.
         const currPost = this.state.posts[rand];
-        this.state.posts.splice(rand, 1); // Generate a random post, then remove it from the posts array so we don't display it again.
+        const posts = this.state.posts;
+        posts.splice(rand, 1); // Generate a random post, then remove it from the posts array so we don't display it again.
+        this.setState({posts: posts});
 
         if (!currPost.url.endsWith('.jpg') && !currPost.url.endsWith('.png') && !currPost.url.endsWith('.gif')) { // Fix non-direct links.
             currPost.url += '.jpg'; // Account for non-direct links.
