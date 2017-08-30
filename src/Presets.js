@@ -12,7 +12,7 @@ class Presets extends Component {
                     <ul className='sub-menu'>
                         <li><a href='?sub=foxes&flair=Pics!'>Fox Pictures</a></li>
                         <li><a href='?sub=cats&flair=Cat Picture'>Cat Pictures</a></li>
-                        <li><a href='?sub=puppies'>Dog Pictures</a></li>
+                        <li><a href='?sub=puppies'>Puppy Pictures</a></li>
                         <li><a href='?sub=EarthPorn'>Earth Porn</a></li>
                         <li><a href='?sub=CityPorn'>City Porn</a></li>
                     </ul>

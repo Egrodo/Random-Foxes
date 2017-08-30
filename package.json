@@ -1,6 +1,6 @@
 {
   "name": "foxes",
-  "homepage": "https://egrodo.github.io/Random-Foxes",
+  "homepage": "https://egrodo.github.io/Reddit-Image-Generator/",
   "version": "1.0.0",
   "private": true,
   "dependencies": {
